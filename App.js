@@ -16,18 +16,21 @@ const CARD_HEIGHT = 380;
 
 export default function App() {
   const animatedSensor = useAnimatedSensor(SensorType.ROTATION, {
-    interval: 100,
+    interval: 0,
   });
 
   const style = useAnimatedStyle(() => {
-    const { pitch, yaw } = animatedSensor.sensor.value;
+    const { pitch, yaw, qy } = animatedSensor.sensor.value;
+
+    let num = qy > 0 ? 30 : 50;
 
     let yawValue =
-      30 * (yaw < 0 ? 2.5 * Number(yaw.toFixed(2)) : Number(yaw.toFixed(2)));
-    let pitchValue = 36 * pitch.toFixed(2);
+      qy > 0 ? num * 2.5 * Number(qy.toFixed(2)) : num * qy.toFixed(2);
+
+    let pitchValue = 26 * pitch.toFixed(2);
 
     return {
-      transform: [{ translateX: pitchValue }, { translateY: yawValue }],
+      transform: [{ translateX: yawValue }, { translateY: pitchValue }],
     };
   });
 
